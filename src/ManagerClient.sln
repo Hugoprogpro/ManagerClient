@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerClient.UI", "ManagerClient.UI\ManagerClient.UI.csproj", "{7093F96D-D41F-4463-A56F-485BB37D8C50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerClient.DI", "ManagerClient.DI\ManagerClient.DI.csproj", "{F1C299F9-C691-4886-AECC-523BB8003EF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerClient.Domain", "ManagerClient.DI\ManagerClient.Domain.csproj", "{F1C299F9-C691-4886-AECC-523BB8003EF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerClient.Tests", "ManagerClient.Tests\ManagerClient.Tests.csproj", "{CAB7088E-8AA6-4B05-A23E-D481FE5A8FE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerClient.UnitTests", "ManagerClient.Tests\ManagerClient.UnitTests.csproj", "{CAB7088E-8AA6-4B05-A23E-D481FE5A8FE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerCliente.Infra", "ManagerCliente.Infra\ManagerCliente.Infra.csproj", "{70853821-A33C-4ED0-994F-4DA99A097F2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,16 @@ Global
 		{CAB7088E-8AA6-4B05-A23E-D481FE5A8FE2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CAB7088E-8AA6-4B05-A23E-D481FE5A8FE2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CAB7088E-8AA6-4B05-A23E-D481FE5A8FE2}.Release|x86.ActiveCfg = Release|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{70853821-A33C-4ED0-994F-4DA99A097F2D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -59,5 +59,14 @@ namespace ManagerClient.UI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0.
+        /// </summary>
+        internal static string ClienteForm_InitializeForm__0 {
+            get {
+                return ResourceManager.GetString("ClienteForm_InitializeForm__0", resourceCulture);
+            }
+        }
     }
 }
