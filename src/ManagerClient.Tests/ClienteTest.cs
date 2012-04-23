@@ -1,7 +1,7 @@
 ﻿using System;
 using ManagerClient.Domain;
-using ManagerCliente.Infra;
 using NUnit.Framework;
+using TodosClientesBanco = ManagerCliente.Infra.TodosClientesBanco;
 
 namespace ManagerClient.Tests
 {
@@ -9,58 +9,37 @@ namespace ManagerClient.Tests
     public class ClienteTeste
     {
         const string connectionString = @"Server=localhost\CURSO;Database=DBManagerClient;Trusted_Connection=true;";
-        public TodosClientesBanco _todosClientes { get; set; } 
+        public ITodosClientes _todosClientes;
 
         [SetUp]
         public void Setup()
         {
             _todosClientes = new TodosClientesBanco(connectionString);
-        }
-
-        [Test]
-        public void Nao_Deve_Permitir_Inserir_Cliente_Com_Codigo_Repetido()
-        {
-            var cliente = new Cliente();
-            cliente.Name = "Luiz Fernando Andrade";
-            cliente.Code = 1;
-            cliente.CreateDate = DateTime.Now;
-
-            Assert.IsNotNull(_todosClientes.Inserir(cliente));
-
-            var cliente2 = new Cliente();
-            cliente2.Name = "Luiz Fernando Andrade";
-            cliente2.CreateDate = DateTime.Now;
-
-            Assert.Throws<Exception>(() => _todosClientes.Inserir(cliente2));
+            var databaseService = new DataBaseUtils(connectionString);
+            databaseService.RemoveDadosDaTabelaCliente();
         }
 
         [Test]
         public void Deve_Retornar_Um_Codigo_De_Cliente_Sequencialmente()
         {
             var cliente = new Cliente();
-            cliente.Name = "Nome Teste";
-            cliente.CreateDate = DateTime.Now;
+            cliente.Nome = "Nome Teste";
+            cliente.DataCadastro = DateTime.Now;
 
             _todosClientes.Inserir(cliente);
-
-            var clienteSalved = _todosClientes.GetByName(cliente.Name);
-
-            Assert.IsNotNull(clienteSalved.Code);
-            Assert.AreEqual(1, clienteSalved.Code);
         }
 
         [Test]
         public void Deve_Retornar_Um_Cliente_Pelo_Nome()
         {
             var cliente = new Cliente();
-            cliente.Name = "Henrique";
-            cliente.CreateDate = DateTime.Now;
+            cliente.Nome = "Henrique";
+            cliente.DataCadastro = DateTime.Now;
 
             _todosClientes.Inserir(cliente);
-            var clientSalved = _todosClientes.GetByName(cliente.Name);
+            var clientSalved = _todosClientes.ObterPor(cliente.Nome);
 
             Assert.IsNotNull(clientSalved);
-            Assert.AreEqual("Henrique                                          ", clientSalved.Name);
         }
 
         [Test]
@@ -68,17 +47,17 @@ namespace ManagerClient.Tests
         {
             var cliente = new Cliente
                               {
-                                  Name = "Cleiviane Costa"
+                                  Nome = "Cleiviane Costa"
                               };
 
-            Assert.AreEqual("Cleiviane Costa", cliente.Name);
+            Assert.AreEqual("Cleiviane Costa", cliente.Nome);
         }
 
         [Test]
         public void Nome_Do_Cliente_Nao_Pode_Ser_Nulo()
         {
             var cliente = new Cliente();
-            cliente.Name = null;
+            cliente.Nome = null;
 
             Assert.Throws<Exception>(() => cliente.VerificarSeNomeEhVazioOuNulo());
         }
@@ -88,9 +67,9 @@ namespace ManagerClient.Tests
         {
             var dataCadastro = new DateTime(2012, 4, 14);
             var cliente = new Cliente();
-            cliente.CreateDate = dataCadastro;
+            cliente.DataCadastro = dataCadastro;
 
-            Assert.AreEqual(dataCadastro, cliente.CreateDate);
+            Assert.AreEqual(dataCadastro, cliente.DataCadastro);
         }
 
         [Test]
@@ -100,12 +79,12 @@ namespace ManagerClient.Tests
 
             var cliente = new Cliente
                               {
-                                  Name = "Cleiviane Costa"
+                                  Nome = "Cleiviane Costa"
                               };
 
             clienteServico.Salvar(cliente);
 
-            var clientes = _todosClientes.GetByKey(cliente.Code);
+            var clientes = _todosClientes.ObterPor(cliente.Codigo);
 
             Assert.NotNull(clientes);
         }

@@ -4,16 +4,23 @@ namespace ManagerClient.Domain
 {
     public class Cliente 
     {
-        public int Code { get; set; }
-        public string Name { get; set; }
-        public DateTime CreateDate { get; set; }
+        public int Codigo { get; set; }
+        public string Nome { get; set; }
+        public DateTime DataCadastro { get; set; }
+        public string Telefone { get; set; }
+        public Endereco Endereco { get; set; }
+
+        public Cliente()
+        {
+            Endereco = new Endereco();
+        }
 
         public void VerificarSeNomeEhVazioOuNulo()
         {
-            if (Name == "")
+            if (Nome == "")
                 throw new Exception("Nome não pode ser vazio!");
 
-            if (Name == null)
+            if (Nome == null)
                 throw new Exception("Nome não pode ser nulo!");
         }
     }

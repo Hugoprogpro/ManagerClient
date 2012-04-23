@@ -68,5 +68,14 @@ namespace ManagerClient.UI.Properties {
                 return ResourceManager.GetString("ClienteForm_InitializeForm__0", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cadastro adicionado com sucesso!.
+        /// </summary>
+        internal static string ClienteForm_okButton_Click_Cadastro_adicionado_com_sucesso_ {
+            get {
+                return ResourceManager.GetString("ClienteForm_okButton_Click_Cadastro_adicionado_com_sucesso_", resourceCulture);
+            }
+        }
     }
 }

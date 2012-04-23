@@ -19,15 +19,27 @@ namespace ManagerClient.UI
 
         private void InitializeForm(FormType.FormMode pFormMode)
         {
+            FillControls();
+
             SetEvents();
 
+            if (pFormMode == FormType.FormMode.AddMode)
+                codeTextBox.Text = _clientService.GetNextSequenceNumber().ToString();
+
             if (pFormMode == FormType.FormMode.EditMode)
-                FillGrid();
+                FillCliente();
         }
 
-        private void FillGrid()
+        private void FillCliente()
         {
             
+        }
+
+        private void FillControls()
+        {
+            codeTextBox.Enabled = false;
+            DataCadastroTextBox.Enabled = false;
+            DataCadastroTextBox.Text = DateTime.Now.ToString();
         }
 
         private void SetEvents()
@@ -40,18 +52,20 @@ namespace ManagerClient.UI
         void codeTextBox_LostFocus(object sender, EventArgs e)
         {
             var cliente = _clientService.GetByKey(Convert.ToInt32(codeTextBox.Text));
+
             if (cliente != null)
                 FillControls(cliente);
         }
 
         private void FillControls(Cliente cliente)
         {
-            NomeTextBox.Text = cliente.Name;
-            DataCadastroTextBox.Text = cliente.CreateDate.ToString();
+            NomeTextBox.Text = cliente.Nome;
+            DataCadastroTextBox.Text = cliente.DataCadastro.ToString();
         }
 
         void CancelButton_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -59,19 +73,26 @@ namespace ManagerClient.UI
         {
             var cliente = new Cliente
                               {
-                                  Name = NomeTextBox.Text,
-                                  Code = GetNextCode(),
-                                  CreateDate = Convert.ToDateTime(DataCadastroTextBox.Text)
+                                  Nome = NomeTextBox.Text,
+                                  Codigo = GetNextCode(),
+                                  Telefone = PhoneTextBox.Text,
+                                  DataCadastro = Convert.ToDateTime(DataCadastroTextBox.Text)
                               };
+
+            cliente.Endereco.Bairro = txtBairro.Text;
+            cliente.Endereco.Cidade = cboCidade.SelectedIndex;
+            cliente.Endereco.Logradouro = txtLogradouro.Text;
+            cliente.Endereco.Numero = numberTxt.Text;
 
             _clientService.Salvar(cliente);
 
-            codeTextBox.Text = cliente.Code.ToString();
+            MessageBox.Show("Cadastro adicionado com sucesso!", "Mensagem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            Close();
         }
 
         private int GetNextCode()
         {
-            var quantTodosClientes = _todosClientes.Obtertodos().Count;
+            var quantTodosClientes = _todosClientes.ObterListatodos().Count;
             return quantTodosClientes == 0 ? 1: quantTodosClientes + 1;
         }
     }
