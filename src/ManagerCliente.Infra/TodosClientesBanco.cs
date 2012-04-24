@@ -110,24 +110,15 @@ namespace ManagerCliente.Infra
         {
             var connection = ObterConexao(_connectionString);
 
-            var query = String.Format("Select * from Cliente Where Nome = '{0}'", nome);
+            var query = String.Format("Select * from Cliente Where Nome Like '{0}%'", nome);
 
             var command = new SqlCommand(query, connection);
-            var dtReader = command.ExecuteReader();
+            var daClientes = new SqlDataAdapter(command);
 
-            var cliente = new Cliente();
+            var dtClientes = new DataTable();
+            daClientes.Fill(dtClientes);
 
-            while (dtReader.Read())
-            {
-                cliente.Codigo = Convert.ToInt32(dtReader["Codigo"]);
-                cliente.Nome = dtReader["Nome"].ToString();
-                cliente.DataCadastro = Convert.ToDateTime(dtReader["DataCadastro"]);
-                cliente.Endereco.Logradouro = dtReader["Logradouro"].ToString();
-                cliente.Endereco.Bairro = dtReader["Bairro"].ToString();
-                cliente.Telefone = dtReader["Telefone"].ToString();
-            }
-
-            return new DataTable();
+            return dtClientes;
         }
     }
 }

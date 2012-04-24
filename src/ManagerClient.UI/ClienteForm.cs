@@ -11,47 +11,71 @@ namespace ManagerClient.UI
         private static readonly ITodosClientes _todosClientes = new TodosClientesBanco(connectionString);
         private readonly ClienteServico _clientService = new ClienteServico(_todosClientes);
 
-        public ClienteForm(FormType.FormMode pFormMode)
+        private readonly Cliente _clienteAtual;
+
+        public ClienteForm(FormType.FormMode pFormMode, Cliente cliente)
         {
+            _clienteAtual = cliente;
+
             InitializeComponent();
-            InitializeForm(pFormMode);
+            InicializarFormulario(pFormMode);
         }
 
-        private void InitializeForm(FormType.FormMode pFormMode)
+        private void InicializarFormulario(FormType.FormMode pFormMode)
         {
-            FillControls();
+            PreencherCampos();
+            PreencherCidades();
 
-            SetEvents();
+            ConfigurarEventos();
 
             if (pFormMode == FormType.FormMode.AddMode)
-                codeTextBox.Text = _clientService.GetNextSequenceNumber().ToString();
+                txtCodigo.Text = _clientService.GetNextSequenceNumber().ToString();
 
             if (pFormMode == FormType.FormMode.EditMode)
                 FillCliente();
         }
 
+        private void PreencherCidades()
+        {
+            var cidades = new CidadeBanco(connectionString);
+            cboCidade.Sorted = true;
+
+            cboCidade.DataSource = cidades.ObterListatodos();
+
+            cboCidade.DisplayMember = "Descricao";
+            cboCidade.ValueMember = "Id";
+        }
+
         private void FillCliente()
         {
-            
+            txtNome.Text = _clienteAtual.Nome;
+            txtBairro.Text = _clienteAtual.Endereco.Bairro;
+            txtCodigo.Text = _clienteAtual.Codigo.ToString();
+            txtDataCadastro.Text = _clienteAtual.DataCadastro.ToString();
+            txtLogradouro.Text = _clienteAtual.Endereco.Logradouro;
+            txtNumero.Text = _clienteAtual.Endereco.Numero;
+            txtTelefone.Text = _clienteAtual.Telefone;
         }
 
-        private void FillControls()
+        private void PreencherCampos()
         {
-            codeTextBox.Enabled = false;
-            DataCadastroTextBox.Enabled = false;
-            DataCadastroTextBox.Text = DateTime.Now.ToString();
+            txtCodigo.Enabled = false;
+            txtDataCadastro.Enabled = false;
+            txtDataCadastro.Text = DateTime.Now.ToString();
         }
 
-        private void SetEvents()
+        private void ConfigurarEventos()
         {
             okButton.Click += okButton_Click;
+            
             CancelButton.Click += CancelButton_Click;
-            codeTextBox.LostFocus += codeTextBox_LostFocus;
+            txtCodigo.LostFocus += codeTextBox_LostFocus;
+
         }
 
         void codeTextBox_LostFocus(object sender, EventArgs e)
         {
-            var cliente = _clientService.GetByKey(Convert.ToInt32(codeTextBox.Text));
+            var cliente = _clientService.GetByKey(Convert.ToInt32(txtCodigo.Text));
 
             if (cliente != null)
                 FillControls(cliente);
@@ -59,8 +83,8 @@ namespace ManagerClient.UI
 
         private void FillControls(Cliente cliente)
         {
-            NomeTextBox.Text = cliente.Nome;
-            DataCadastroTextBox.Text = cliente.DataCadastro.ToString();
+            txtNome.Text = cliente.Nome;
+            txtDataCadastro.Text = cliente.DataCadastro.ToString();
         }
 
         void CancelButton_Click(object sender, EventArgs e)
@@ -73,16 +97,16 @@ namespace ManagerClient.UI
         {
             var cliente = new Cliente
                               {
-                                  Nome = NomeTextBox.Text,
+                                  Nome = txtNome.Text,
                                   Codigo = GetNextCode(),
-                                  Telefone = PhoneTextBox.Text,
-                                  DataCadastro = Convert.ToDateTime(DataCadastroTextBox.Text)
+                                  Telefone = txtTelefone.Text,
+                                  DataCadastro = Convert.ToDateTime(txtDataCadastro.Text)
                               };
 
             cliente.Endereco.Bairro = txtBairro.Text;
             cliente.Endereco.Cidade = cboCidade.SelectedIndex;
             cliente.Endereco.Logradouro = txtLogradouro.Text;
-            cliente.Endereco.Numero = numberTxt.Text;
+            cliente.Endereco.Numero = txtNumero.Text;
 
             _clientService.Salvar(cliente);
 
