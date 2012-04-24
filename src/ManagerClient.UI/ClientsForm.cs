@@ -8,7 +8,7 @@ namespace ManagerClient.UI
     public partial class ClientsForm : Form
     {
         public ITodosClientes _todosOsClientes { get; set; }
-        const string connectionString = @"Server=localhost\CURSO;Database=DBManagerClient;Trusted_Connection=true;";
+        const string connectionString = @"Server=localhost\Teste;Database=DBManagerClient;Trusted_Connection=true;";
 
         public ClientsForm()
         {
