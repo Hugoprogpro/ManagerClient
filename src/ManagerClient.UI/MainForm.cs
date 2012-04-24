@@ -8,10 +8,10 @@ namespace ManagerClient.UI
         {
             InitializeComponent();
 
-            Initializerform();
+            Initializeform();
         }
 
-        private void Initializerform()
+        private void Initializeform()
         {
             SetEvents();
         }

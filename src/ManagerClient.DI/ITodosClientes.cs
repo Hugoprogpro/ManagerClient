@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 
 namespace ManagerClient.Domain
 {
@@ -6,8 +7,12 @@ namespace ManagerClient.Domain
     {
         Cliente Inserir(Cliente cliente);
 
-        List<Cliente> Obtertodos();
-        Cliente GetByKey(int Id);
-        Cliente GetByName(string name); 
+        List<Cliente> ObterListatodos();
+
+        DataTable ObterTodos();
+
+        Cliente ObterPor(int Id);
+        
+        DataTable ObterPor(string name); 
     }
 }

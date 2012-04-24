@@ -117,4 +117,7 @@
   <data name="ClienteForm_InitializeForm__0">
     <value xml:space="preserve">0</value>
   </data>
+  <data name="ClienteForm_okButton_Click_Cadastro_adicionado_com_sucesso_">
+    <value xml:space="preserve">Cadastro adicionado com sucesso!</value>
+  </data>
 </root>

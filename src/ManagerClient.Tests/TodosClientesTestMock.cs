@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ManagerClient.Domain;
+using ManagerCliente.Infra;
+using NUnit.Framework;
 
 namespace ManagerClient.Tests
 {
@@ -11,7 +12,7 @@ namespace ManagerClient.Tests
         public Cliente Inserir(Cliente cliente)
         {
             //cliente.Codigo = clientes.Count == 0 ? 1 : clientes.Max(c => c.Codigo);
-            cliente.Code = clientes.Count + 1;
+            cliente.Codigo = clientes.Count + 1;
             clientes.Add(cliente);
 
             return cliente;

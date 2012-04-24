@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using ManagerClient.Domain;
 
 namespace ManagerCliente.Infra
 {
     public class TodosClientesBanco : ITodosClientes
     {
-        private readonly string _connectionString;
+        private readonly string _connectionString =
+            @"Server=localhost\CURSO;Database=DBManagerClient;Trusted_Connection=true;";
 
         public TodosClientesBanco (string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        private SqlConnection ObterConexao()
+        public  SqlConnection ObterConexao(string connetionString)
         {
             var connection = new SqlConnection(_connectionString);
             connection.Open();
@@ -25,11 +26,11 @@ namespace ManagerCliente.Infra
 
         public Cliente Inserir(Cliente cliente)
         {
-            cliente.Code = GetNextCode();
+            var query = String.Format("Insert into Cliente values ('{0}', '{1}', '{2}','{3}', '{4}', '{5}', '{6}', '{7}')", cliente.Codigo, cliente.Nome, 
+                cliente.DataCadastro, cliente.Telefone, cliente.Endereco.Logradouro, cliente.Endereco.Bairro, cliente.Endereco.Numero,
+                cliente.Endereco.Cidade);
 
-            var query = String.Format("Insert into Cliente values ('{0}', '{1}', '{2}')", cliente.Code, cliente.Name, cliente.CreateDate);
-
-            var connection = ObterConexao();
+            var connection = ObterConexao(_connectionString);
 
             var command = new SqlCommand(query, connection);
             command.ExecuteNonQuery();
@@ -37,15 +38,10 @@ namespace ManagerCliente.Infra
             return cliente;
         }
 
-        private int GetNextCode()
+        public List<Cliente> ObterListatodos()
         {
-            return Obtertodos().Last().Code == 0 ? 1 : Obtertodos().Last().Code + 1;
-        }
-
-        public List<Cliente> Obtertodos()
-        {
-            var connection = ObterConexao();
-            const string query = "Select * from cliente";
+            var connection = ObterConexao(_connectionString);
+            const string query = "Select * from cliente order by codigo";
 
             var command = new SqlCommand(query, connection);
             var dtReader = command.ExecuteReader();
@@ -54,51 +50,75 @@ namespace ManagerCliente.Infra
             while (dtReader.Read())
             {
                 var cliente = new Cliente();
-                cliente.Name = dtReader["Nome"].ToString();
-                cliente.CreateDate = Convert.ToDateTime(dtReader["DataCadastro"]);
+
+                cliente.Codigo = Convert.ToInt32(dtReader["Codigo"]);
+                cliente.Nome = dtReader["Nome"].ToString();
+                cliente.DataCadastro = Convert.ToDateTime(dtReader["DataCadastro"]);
+                cliente.Endereco.Logradouro = dtReader["Logradouro"].ToString();
+                cliente.Endereco.Bairro = dtReader["Bairro"].ToString();
+                cliente.Telefone = dtReader["Telefone"].ToString();
+
                 clientes.Add(cliente);
             }
 
             return clientes;
         }
 
-        public Cliente GetByKey(int code)
+        public DataTable ObterTodos()
         {
-            var connection = ObterConexao();
-            string query = String.Format("Select * from Cliente where Codigo = '{0}'", code);
+            var connection = ObterConexao(_connectionString);
+
+            var query = ("Select * from Cliente order by codigo");
 
             var command = new SqlCommand(query, connection);
-            var dtReader = command.ExecuteReader();
+            var dtClientes = new DataTable();
 
-            var cliente = new Cliente();
+            var reader = command.ExecuteReader();
 
-            while (dtReader.Read())
-            {
-                cliente.Name = dtReader["Nome"].ToString();
-            }
-
-            return cliente;
+            dtClientes.Load(reader);
+            return dtClientes;
         }
 
-        public Cliente GetByName(string name) 
+        public Cliente ObterPor(int codigo)
         {
-            var connection = ObterConexao();
-
-            var query = String.Format("Select * from Cliente Where Nome = '{0}'", name);
+            var connection = ObterConexao(_connectionString);
+            string query = String.Format("Select * from Cliente where Codigo = '{0}'", codigo);
 
             var command = new SqlCommand(query, connection);
             var dtReader = command.ExecuteReader();
 
-            var cliente = new Cliente();
-
-            while (dtReader.Read())
+            if (dtReader.HasRows)
             {
-                cliente.Name = dtReader["Nome"].ToString();
-                cliente.CreateDate = Convert.ToDateTime(dtReader["DataCadastro"]);
-                cliente.Code = Convert.ToInt32(dtReader["Codigo"]);
-            }
+                var cliente = new Cliente();
 
-            return cliente;
+                while (dtReader.Read())
+                {
+                    cliente.Codigo = Convert.ToInt32(dtReader["Codigo"]);
+                    cliente.Nome = dtReader["Nome"].ToString();
+                    cliente.DataCadastro = Convert.ToDateTime(dtReader["DataCadastro"]);
+                    cliente.Endereco.Logradouro = dtReader["Logradouro"].ToString();
+                    cliente.Endereco.Bairro = dtReader["Bairro"].ToString();
+                    cliente.Telefone = dtReader["Telefone"].ToString();
+                }
+
+                return cliente;
+            }
+            return null;
+        }
+
+        public DataTable ObterPor(string nome) 
+        {
+            var connection = ObterConexao(_connectionString);
+
+            var query = String.Format("Select * from Cliente Where Nome Like '{0}%'", nome);
+
+            var command = new SqlCommand(query, connection);
+            var daClientes = new SqlDataAdapter(command);
+
+            var dtClientes = new DataTable();
+            daClientes.Fill(dtClientes);
+
+            return dtClientes;
         }
     }
 }
