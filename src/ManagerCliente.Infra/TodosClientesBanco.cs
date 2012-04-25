@@ -9,7 +9,7 @@ namespace ManagerCliente.Infra
     public class TodosClientesBanco : ITodosClientes
     {
         private readonly string _connectionString =
-            @"Server=localhost\CURSO;Database=DBManagerClient;Trusted_Connection=true;";
+            @"Server=CLEIVIANE-PC\TESTE;Database=Consultorio;User ID=sa;Password=sap@123;Trusted_Connection=False;";
 
         public TodosClientesBanco (string connectionString)
         {

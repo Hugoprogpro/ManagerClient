@@ -7,7 +7,9 @@ namespace ManagerClient.UI
 {
     public partial class ClientsForm : Form
     {
-        const string connectionString = @"Server=localhost\CURSO;Database=DBManagerClient;Trusted_Connection=true;";
+        const string connectionString =
+            @"Server=CLEIVIANE-PC\TESTE;Database=Consultorio;User ID=sa;Password=sap@123;Trusted_Connection=False;";
+
         private ClienteServico _clientService;
         private Cliente currCliente = new Cliente();
 
