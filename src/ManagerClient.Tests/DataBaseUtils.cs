@@ -6,7 +6,7 @@ namespace ManagerClient.Tests
     class DataBaseUtils
     {
         private readonly string _connectionString =
-            @"Server=CLEIVIANE-PC\TESTE;Database=Consultorio;User ID=sa;Password=sap@123;Trusted_Connection=False;";
+            @"Server=CLEIVIANE-PC\TESTE;Database=DBManagerClient;User ID=sa;Password=sap@123;Trusted_Connection=False;";
 
         
         public TodosClientesBanco _todosClientes;

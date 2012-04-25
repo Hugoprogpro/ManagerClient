@@ -8,7 +8,7 @@ namespace ManagerClient.UI
     public partial class ClientsForm : Form
     {
         const string connectionString =
-            @"Server=CLEIVIANE-PC\TESTE;Database=Consultorio;User ID=sa;Password=sap@123;Trusted_Connection=False;";
+            @"Server=CLEIVIANE-PC\TESTE;Database=DBManagerClient;User ID=sa;Password=sap@123;Trusted_Connection=False;";
 
         private ClienteServico _clientService;
         private Cliente currCliente = new Cliente();
@@ -83,7 +83,7 @@ namespace ManagerClient.UI
 
         void excluirButton_Click(object sender, EventArgs e)
         {
-            
+            var clienteSelecionado = clientsGrid.SelectedRows;
         }
 
         void fecharButton_Click(object sender, EventArgs e)
