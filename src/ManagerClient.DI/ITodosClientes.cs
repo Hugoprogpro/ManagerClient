@@ -13,6 +13,8 @@ namespace ManagerClient.Domain
 
         Cliente ObterPor(int Id);
         
-        DataTable ObterPor(string name); 
+        DataTable ObterPor(string name);
+        
+        bool Remove(Cliente cliente);
     }
 }

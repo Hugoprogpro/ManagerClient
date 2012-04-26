@@ -49,8 +49,6 @@ namespace ManagerClient.UI
             clientsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-
-
         private void FormatCliente()
         {
             clientsGrid.Columns.Add("Codigo", "Código");
@@ -83,7 +81,16 @@ namespace ManagerClient.UI
 
         void excluirButton_Click(object sender, EventArgs e)
         {
+            var cliente = new Cliente();
             var clienteSelecionado = clientsGrid.SelectedRows;
+
+            cliente.Codigo = int.Parse(clienteSelecionado[0].Cells["Codigo"].Value.ToString());
+
+            _clientService.Excluir(cliente);
+            
+            MessageBox.Show("Cadastro removido com sucesso!", "Mensagem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            
+            PreencherClientes();
         }
 
         void fecharButton_Click(object sender, EventArgs e)

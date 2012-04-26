@@ -48,5 +48,10 @@ namespace ManagerClient.Domain
         {
             return _todosClientes.ObterTodos();
         }
+
+        public bool Excluir(Cliente cliente)
+        {
+            return _todosClientes.Remove(cliente);
+        }
     }
 }

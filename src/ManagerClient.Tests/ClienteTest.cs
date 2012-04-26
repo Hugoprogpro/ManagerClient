@@ -8,15 +8,31 @@ namespace ManagerClient.Tests
     [TestFixture]
     public class ClienteTeste
     {
-        const string connectionString = @"Server=localhost\CURSO;Database=DBManagerClient;Trusted_Connection=true;";
+        const string connectionString = @"Server=localhost\TESTE;Database=DBManagerClient;Trusted_Connection=true;";
         public ITodosClientes _todosClientes;
+        public ClienteServico _clienteServico;
 
         [SetUp]
         public void Setup()
         {
             _todosClientes = new TodosClientesBanco(connectionString);
+            _clienteServico = new ClienteServico(_todosClientes);
             var databaseService = new DataBaseUtils(connectionString);
             databaseService.RemoveDadosDaTabelaCliente();
+        }
+
+        [Test]
+        public void Deve_Permitir_Remover_Um_Cliente()
+        {
+            var cliente = new Cliente();
+            cliente.Nome = "Nome Teste";
+            cliente.Codigo = 1;
+            
+            _clienteServico.Salvar(cliente);
+
+            var clienteEncontrado = _clienteServico.GetByKey(cliente.Codigo);
+
+            Assert.True(_todosClientes.Remove(clienteEncontrado));
         }
 
         [Test]
@@ -59,7 +75,7 @@ namespace ManagerClient.Tests
             var cliente = new Cliente();
             cliente.Nome = null;
 
-            Assert.Throws<Exception>(() => cliente.VerificarSeNomeEhVazioOuNulo());
+            Assert.Throws<Exception>(cliente.VerificarSeNomeEhVazioOuNulo);
         }
 
         [Test]

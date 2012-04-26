@@ -120,5 +120,24 @@ namespace ManagerCliente.Infra
 
             return dtClientes;
         }
+
+        public bool Remove(Cliente cliente)
+        {
+            var connection = ObterConexao(_connectionString);
+
+            var query = String.Format("Delete from Cliente Where Codigo = {0}", cliente.Codigo);
+
+            var command = new SqlCommand(query, connection);
+            
+            try
+            {
+                command.ExecuteReader();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
     }
 }
