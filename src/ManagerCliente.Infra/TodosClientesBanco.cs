@@ -139,5 +139,28 @@ namespace ManagerCliente.Infra
                 throw new Exception();
             }
         }
+
+        public bool Update(Cliente cliente)
+        {
+            var connection = ObterConexao(_connectionString);
+
+            var query = String.Format("Update Cliente set Nome = '{0}', dataCadastro = '{1}', telefone = '{2}', " +
+                                      "Bairro = '{3}', Logradouro = '{4}', Numero = '{5}', Cidade = {6} " +
+                                      "where Codigo = {7}", cliente.Nome, cliente.DataCadastro, cliente.Telefone,
+                                      cliente.Endereco.Bairro, cliente.Endereco.Logradouro, cliente.Endereco.Numero,
+                                      cliente.Endereco.Cidade, cliente.Codigo);
+
+            var command = new SqlCommand(query, connection);
+
+            try
+            {
+                command.ExecuteReader();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
     }
 }

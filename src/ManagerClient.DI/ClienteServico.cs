@@ -53,5 +53,10 @@ namespace ManagerClient.Domain
         {
             return _todosClientes.Remove(cliente);
         }
+
+        public void Alterar(Cliente cliente)
+        {
+            _todosClientes.Update(cliente);
+        }
     }
 }

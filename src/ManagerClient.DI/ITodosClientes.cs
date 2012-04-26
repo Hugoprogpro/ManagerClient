@@ -16,5 +16,7 @@ namespace ManagerClient.Domain
         DataTable ObterPor(string name);
         
         bool Remove(Cliente cliente);
+
+        bool Update(Cliente cliente);
     }
 }
