@@ -5,19 +5,21 @@ namespace ManagerClient.Tests
 {
     class DataBaseUtils
     {
-        private readonly string _connetionString = @"Server=localhost\CURSO;Database=DBManagerClientTest;Trusted_Connection=true;";
+        private readonly string _connectionString =
+            @"Server=CLEIVIANE-PC\TESTE;Database=DBManagerClient;User ID=sa;Password=sap@123;Trusted_Connection=False;";
+
         
         public TodosClientesBanco _todosClientes;
         
         public DataBaseUtils(string connetionString)
         {
-            _connetionString = connetionString;
+            _connectionString = connetionString;
             _todosClientes = new TodosClientesBanco(connetionString);
         }
 
         public void RemoveDadosDaTabelaCliente()
         {
-            var connection = _todosClientes.ObterConexao(_connetionString);
+            var connection = _todosClientes.ObterConexao(_connectionString);
             var query = string.Format("Delete From Cliente");
 
             var command = new SqlCommand(query, connection);
