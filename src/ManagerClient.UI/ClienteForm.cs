@@ -14,6 +14,7 @@ namespace ManagerClient.UI
         private readonly ClienteServico _clientService = new ClienteServico(_todosClientes);
 
         private readonly Cliente _clienteAtual;
+        private FormType.FormMode _FormMode;
 
         public ClienteForm(FormType.FormMode pFormMode, Cliente cliente)
         {
@@ -25,16 +26,20 @@ namespace ManagerClient.UI
 
         private void InicializarFormulario(FormType.FormMode pFormMode)
         {
+            _FormMode = pFormMode;
             PreencherCampos();
             PreencherCidades();
 
             ConfigurarEventos();
 
-            if (pFormMode == FormType.FormMode.AddMode)
+            if (_FormMode == FormType.FormMode.AddMode)
                 txtCodigo.Text = _clientService.GetNextSequenceNumber().ToString();
 
-            if (pFormMode == FormType.FormMode.EditMode)
+            if (_FormMode == FormType.FormMode.EditMode)
+            {
                 FillCliente();
+                okButton.Text = "Alterar";
+            }
         }
 
         private void PreencherCidades()
@@ -96,22 +101,45 @@ namespace ManagerClient.UI
 
         void okButton_Click(object sender, EventArgs e)
         {
-            var cliente = new Cliente
-                              {
-                                  Nome = txtNome.Text,
-                                  Codigo = GetNextCode(),
-                                  Telefone = txtTelefone.Text,
-                                  DataCadastro = Convert.ToDateTime(txtDataCadastro.Text)
-                              };
+            if(_FormMode == FormType.FormMode.AddMode)
+            {
+                var cliente = new Cliente
+                {
+                    Nome = txtNome.Text,
+                    Codigo = GetNextCode(),
+                    Telefone = txtTelefone.Text,
+                    DataCadastro = Convert.ToDateTime(txtDataCadastro.Text)
+                };
 
-            cliente.Endereco.Bairro = txtBairro.Text;
-            cliente.Endereco.Cidade = cboCidade.SelectedIndex;
-            cliente.Endereco.Logradouro = txtLogradouro.Text;
-            cliente.Endereco.Numero = txtNumero.Text;
+                cliente.Endereco.Bairro = txtBairro.Text;
+                cliente.Endereco.Cidade = cboCidade.SelectedIndex;
+                cliente.Endereco.Logradouro = txtLogradouro.Text;
+                cliente.Endereco.Numero = txtNumero.Text;
 
-            _clientService.Salvar(cliente);
+                _clientService.Salvar(cliente);
 
-            MessageBox.Show("Cadastro adicionado com sucesso!", "Mensagem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Cadastro adicionado com sucesso!", "Mensagem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            if(_FormMode == FormType.FormMode.EditMode)
+            {
+                var cliente = new Cliente
+                {
+                    Nome = txtNome.Text,
+                    Codigo = Convert.ToInt32(txtCodigo.Text),
+                    Telefone = txtTelefone.Text,
+                    DataCadastro = Convert.ToDateTime(txtDataCadastro.Text)
+                };
+
+                cliente.Endereco.Bairro = txtBairro.Text;
+                cliente.Endereco.Cidade = cboCidade.SelectedIndex;
+                cliente.Endereco.Logradouro = txtLogradouro.Text;
+                cliente.Endereco.Numero = txtNumero.Text;
+
+                _clientService.Alterar(cliente);
+                MessageBox.Show("Cadastro alterado com sucesso!", "Mensagem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
             Close();
         }
 

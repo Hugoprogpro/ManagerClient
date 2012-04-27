@@ -49,8 +49,6 @@ namespace ManagerClient.UI
             clientsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-
-
         private void FormatCliente()
         {
             clientsGrid.Columns.Add("Codigo", "Código");
@@ -79,11 +77,29 @@ namespace ManagerClient.UI
 
             var form = new ClienteForm(FormType.FormMode.EditMode, cliente);
             form.Show();
+            PreencherClientes();
         }
 
         void excluirButton_Click(object sender, EventArgs e)
         {
+            var cliente = new Cliente();
             var clienteSelecionado = clientsGrid.SelectedRows;
+
+            DialogResult result = 
+                MessageBox.Show("Deseja realmente excluir este registro?", "Atenção", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                cliente.Codigo = int.Parse(clienteSelecionado[0].Cells["Codigo"].Value.ToString());
+
+                _clientService.Excluir(cliente);
+
+                MessageBox.Show("Cadastro removido com sucesso!", "Mensagem", MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation);
+            }
+
+            PreencherClientes();
         }
 
         void fecharButton_Click(object sender, EventArgs e)
