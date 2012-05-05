@@ -8,7 +8,7 @@ namespace ManagerClient.Tests
     [TestFixture]
     public class ClienteTeste
     {
-        const string connectionString = @"Server=localhost\TESTE;Database=DBManagerClient;Trusted_Connection=true;";
+        const string connectionString = @"Server=localhost\CURSO;Database=DBManagerClient;Trusted_Connection=true;";
         public ITodosClientes _todosClientes;
         public ClienteServico _clienteServico;
 

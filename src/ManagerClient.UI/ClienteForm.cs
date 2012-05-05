@@ -8,7 +8,8 @@ namespace ManagerClient.UI
     public partial class ClienteForm : Form
     {
         const string connectionString =
-            @"Server=CLEIVIANE-PC\CURSO;Database=DBManagerClient;User ID=sa;Password=sap@123;Trusted_Connection=False;";
+                        @"Server=CLEIVIANE-PC\CURSO;Database=DBManagerClient;User ID=sa;Password=sap@123;Trusted_Connection=False;";
+
 
         private static readonly ITodosClientes _todosClientes = new TodosClientesBanco(connectionString);
         private readonly ClienteServico _clientService = new ClienteServico(_todosClientes);
